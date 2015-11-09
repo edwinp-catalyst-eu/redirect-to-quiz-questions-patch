@@ -1,0 +1,26 @@
+diff --git a/mod/quiz/view.php b/mod/quiz/view.php
+index a99f825..e6e00f4 100644
+--- a/mod/quiz/view.php
++++ b/mod/quiz/view.php
+@@ -234,6 +234,21 @@ if (!$viewobj->quizhasquestions) {
+ $viewobj->showbacktocourse = ($viewobj->buttontext === '' &&
+         course_get_format($course)->has_view_page());
+ 
++// Start Tur Forlag custom code
++
++// If user is not a site admin, has permission to attempt the quiz
++// and is enrolled in the quiz then redirect them automatically
++
++// Patch origin: https://github.com/edwinp-catalyst-eu/redirect-to-quiz-questions-patch
++
++if ($viewobj->buttontext
++        && $canattempt
++        && is_enrolled($context, $USER->id)
++        && !is_siteadmin()) {
++    redirect($viewobj->startattempturl);
++}
++// End Tur Forlag custom code
++
+ echo $OUTPUT->header();
+ 
+ if (isguestuser()) {
